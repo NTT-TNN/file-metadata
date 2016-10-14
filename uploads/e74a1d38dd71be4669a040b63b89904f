@@ -1,0 +1,83 @@
+
+//Name:Skyline
+//Tham khao code :https://github.com/dnr2/maratona/blob/master/UVa/1232%20-%20SKYLINE.cpp
+#include<cstdio>
+#include<math.h>
+#include<iostream>
+#include<algorithm>
+#include<string.h>
+#include<fstream>
+#include<vector>
+#include<time.h>
+#include<map>
+
+using namespace std;
+struct Node {
+	int max, min, label;
+};
+Node arr[400000];
+long long result;
+void update(int i) {
+	arr[i].max = max(arr[i << 1].max, arr[i << 1 | 1].max);//c?p nh?t chi?u cao max c?a 2 do?n nh?
+	arr[i].min = min(arr[i << 1].min, arr[i << 1 | 1].min);// c?p nh?t chi?u cao min c?a 2 do?n nh?
+}
+
+//neu nhan label cua doan khac khong thi ta tien hanh cap nhat cac thong tin cua
+// cac doan con cua doan duoc danh dau boi nhan label
+void downdate(int i) {
+	if (arr[i].label) {
+		result--;
+	//	arr[i << 1].max = arr[i << 1].min = arr[i << 1].label = arr[i].label;
+	//	arr[i << 1 | 1].max = arr[i << 1 | 1].min = arr[i << 1 | 1].label = arr[i].label;
+		arr[i].label = 0;
+	}
+}
+//tinh skyline 
+void find(int i, int a, int b, int l, int r, int  h) {
+	if (a > b) return; // n?u di?m d?u l?n hon cu?i d?ng l?i
+	if (a != b) {// n?u khác nhau ta di xét nhãn c?a do?n dó n?u dã có tòa nhà thì downdate do?n con
+		downdate(i);
+	}
+	if (h < arr[i].min) return;// n?u chi?u cao nh? hon chi?u cao min trong do?n thì thoát
+	if (a >= l && b <= r) {// n?u do?n dang xét n?m g?n trong tòa nhà
+		if (h >= arr[i].max) {// xét chi?u cao
+			result += b - a + 1;// tang bi?n k?t qu?
+			arr[i].max = arr[i].min = arr[i].label = h;// ghi nh?n chi?u cao m?i
+			return;
+		}
+	}
+	int m = (a + b) >> 1;// chia dôi do?n
+	
+	if (l > m) find(i << 1 | 1, m+1, b, l, r, h);//c? tòa nhà n?m bên ph?i ta xét do?n bên ph?i
+	else if (r <= m) find(i << 1, a, m, l, r, h);//n?u c? tòa nhà n?m bên trái ta xét do?n bên trái
+	else {// n?u n?m m?t ph?n trái m?t ph?n ph?i ta xét c? hai do?n
+		find(i << 1, a, m, l, r, h);
+		find(i << 1 | 1, m+1, b, l, r, h);
+	}
+	update(i);// c?p nh?t l?i do?n cha
+}
+inline
+void use_io_optimizations()
+{
+	ios_base::sync_with_stdio(false);
+}
+int main() {
+	fstream fo;
+	fo.open("ouput.txt", ios::out);
+	use_io_optimizations();
+	int T, n, l, r, h;
+	scanf("%d", &T);
+	while (T--) {
+		scanf("%d", &n);
+		memset(arr, 0, sizeof(arr));
+		result = 0;
+		for (int k = 0;k < n; ++k) {
+			scanf("%d %d %d", &l, &r, &h);
+			r--;
+			find(1, 1, 100000, l, r, h);
+		}
+		fo << result << endl;
+	}
+	
+	return 0;
+}

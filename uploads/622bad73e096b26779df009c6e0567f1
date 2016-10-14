@@ -1,0 +1,48 @@
+/*
+Name:
+Author:NTT_TNN
+Vesrion:
+Copyright:nguyentienthao96@gmail.com
+Description:
+Date and time :
+*/
+
+#include<cstdio>
+#include<math.h>
+#include<iostream>
+#include<algorithm>
+#include<string>
+#include<fstream>
+#include<vector>
+#include<time.h>
+#include<map>
+#include <cstdlib>
+using namespace std;
+
+	inline
+	void use_io_optimizations()
+	{
+		ios_base::sync_with_stdio(false);
+	}
+
+
+int main() {
+	use_io_optimizations();
+	fstream fo;
+	fo.open("input.txt",ios::out);
+	srand(time(NULL));
+	int T = rand() % 100 + 1;
+	fo<<T<<endl;
+	for(int t=0;t<T;++t){
+		int n = rand() % 10 + 1;
+		fo<<n<<endl;
+		for(int  i=0;i<n;++i){
+			int n1 = rand() % 10 + 1;
+			int n2 = rand() % 3 + 11;
+			int n3 = rand() % 10 + 1;
+			fo<<n1<<" "<<n2<<" "<<n3<<endl;
+		}
+	}
+	fo<<0;
+	return 0;
+}
