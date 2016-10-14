@@ -5,8 +5,6 @@ var app=express();
 
 var port=process.env.PORT||3500;
 
-
-
 var upload = multer({ dest: 'uploads/' });
 
 
