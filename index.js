@@ -5,14 +5,7 @@ var app=express();
 
 var port=process.env.PORT||3500;
 
-var storage=multer.diskStorage({
-  destination:function(req,file,callback){
-    callback(null,'./upload');
-  },
-  filename:function(req,file,callback){
-    callback(null,file.fieldname+'-'+Date.now());
-  }
-});
+
 
 var upload = multer({ dest: 'uploads/' });
 
